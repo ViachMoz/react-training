@@ -55,10 +55,6 @@ class App extends React.Component {
     }
 
     render() {
-        const style = {
-
-        };
-
         let persons = null;
 
         if (this.state.showPersons) {
