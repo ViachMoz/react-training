@@ -1,34 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import Person from './person/Person';
 
 class App extends React.Component {
     state = {
         persons: [
-            {name: "Stan", age: 26},
-            {name: "Steph", age: 23 },
-            {name: "Marge", age: 35 }
-        ]
+            {id: 1, name: "Stan", age: 26},
+            {id: 2, name: "Steph", age: 23 },
+            {id: 3, name: "Marge", age: 35 }
+        ],
+        showPersons: false
     }
 
-    changeNameHandler = () => {
-        this.setState({
-            persons: [
-                {name: "Math", age: 26},
-                {name: "John", age: 23 },
-                {name: "Lilly", age: 35 }
-            ]
-        })
+    deletePersonHandler = (personIndex ) => {
+        const persons = [...this.state.persons];
+        persons.splice(personIndex, 1);
+        this.setState({ persons: persons })
     }
 
-    nameChangeHandler = (event) => {
-        this.setState({
-            persons: [
-                {name: "Math", age: 26},
-                {name:  event.target.value, age: 23 },
-                {name: "Lilly", age: 35 }
-            ]
+    nameChangeHandler = (event, id ) => {
+        const personIndex = this.state.persons.findIndex(p => {
+            return p.id === id;
         })
+
+        const person = {
+            ...this.state.persons[personIndex]
+        };
+
+        person.name = event.target.value;
+
+        const persons = [...this.state.persons];
+        persons[personIndex] = person;
+
+        this.setState({ persons: persons });
+    }
+
+    togglePersonsHandler = () => {
+        const doesShow = this.state.showPersons;
+        this.setState({showPersons: !doesShow})
     }
 
     render() {
@@ -40,24 +49,31 @@ class App extends React.Component {
             cursor: 'pointer'
         };
 
+        let persons = null;
+
+        if (this.state.showPersons) {
+             persons = (
+                 <div>
+                     {this.state.persons.map((person, index) => {
+                        return <Person
+                            click={() =>  this.deletePersonHandler(index)}
+                            name={person.name}
+                            age={person.age}
+                            key={person.id}
+                            changed={(event) => this.nameChangeHandler( event, person.id)}
+                        />
+                     })}
+                 </div>
+             );
+        }
+
         return (
             <div className="App">
                 <h1>Hi, i'm your new friend, react app.</h1>
                 <button
                     style={style}
-                    onClick={() => this.changeNameHandler('Max!')}>Change name!</button>
-                <Person
-                    name={this.state.persons[0].name}
-                    age={this.state.persons[0].age}/>
-                <Person
-                    name={this.state.persons[1].name}
-                    age={this.state.persons[1].age}
-                    click={this.changeNameHandler}
-                    changed={this.nameChangeHandler}
-                >My hobbies: is sitting near a couch.</Person>
-                <Person
-                    name={this.state.persons[2].name}
-                    age={this.state.persons[2].age}/>
+                    onClick={this.togglePersonsHandler}>Toggle Persons</button>
+                {persons}
             </div>
         );
     }
