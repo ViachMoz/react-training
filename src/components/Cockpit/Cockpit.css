@@ -1,0 +1,26 @@
+.toggle-button {
+    background-color: green;
+    font: inherit;
+    border: 1px solid blue;
+    padding: 8px;
+    cursor: pointer;
+    color: white;
+}
+
+.green-btn {
+    background-color: green;
+}
+
+.red-btn {
+    background-color: red;
+}
+
+.green-btn:hover {
+    background-color: lightgreen;
+    color: black;
+}
+
+.red-btn:hover {
+    background-color: salmon;
+    color: black;
+}
