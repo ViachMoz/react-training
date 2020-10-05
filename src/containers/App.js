@@ -13,6 +13,14 @@ class App extends React.Component {
         showPersons: false
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (nextProps.persons !== this.state.persons) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     deletePersonHandler = (personIndex ) => {
         const persons = [...this.state.persons];
         persons.splice(personIndex, 1);
@@ -61,7 +69,7 @@ class App extends React.Component {
                 <Cockpit
                     showPersons={this.state.showPersons}
                     toggled={this.togglePersonsHandler}
-                    persons={this.state.persons}
+                    personsLength={this.state.persons.length}
                     title={this.props.appTitle}
                 />
                 {persons}

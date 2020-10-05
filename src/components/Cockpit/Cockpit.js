@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './Cockpit.css';
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+    useEffect(() => {
+        setTimeout(() => {
+            console.log('Saved data to cloud!')
+        },1000)
+    }, []);
+
     const classes = [];
     const button_class = ['toggle-button'];
 
-    if (props.persons.length <= 2) {
+    if (props.personsLength <= 2) {
         classes.push('red');
     }
-    if (props.persons.length <= 1) {
+    if (props.personsLength <= 1) {
         classes.push('bold');
     }
 
@@ -29,4 +35,4 @@ const cockpit = (props) => {
     );
 };
 
-export default cockpit;
+export default React.memo(Cockpit);
