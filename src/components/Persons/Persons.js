@@ -8,6 +8,7 @@ const persons = (props) => props.persons.map((person, index) => {
         age={person.age}
         key={person.id}
         changed={(event) => props.changed(event, person.id)}
+        isAuth={props.isAuthenticated}
     />
 })
 

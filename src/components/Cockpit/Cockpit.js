@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, createRef, useContext } from "react";
 import './Cockpit.css';
+import AuthContext from '../../context/auth-context';
 
 const Cockpit = (props) => {
+    const toggleBtnClick = createRef(null);
+    const authContext = useContext(AuthContext);
+
     useEffect(() => {
-        setTimeout(() => {
-            console.log('Saved data to cloud!')
-        },1000)
+        toggleBtnClick.current.click();
     }, []);
 
     const classes = [];
@@ -29,8 +31,10 @@ const Cockpit = (props) => {
             <h1>{props.title}</h1>
             <p className={classes.join(' ')}>This is really works!</p>
             <button
+                ref={toggleBtnClick}
                 className={button_class.join(' ')}
                 onClick={props.toggled}>Toggle Persons</button>
+                <button onClick={authContext.login}>Log in</button>
         </div>
     );
 };

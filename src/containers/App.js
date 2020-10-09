@@ -2,6 +2,9 @@ import React from 'react';
 import './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import withCLass from "../hoc/withClass";
+import Aux from '../hoc/Aux'
+import AuthContext from '../context/auth-context'
 
 class App extends React.Component {
     state = {
@@ -10,7 +13,8 @@ class App extends React.Component {
             {id: 2, name: "Steph", age: 23 },
             {id: 3, name: "Marge", age: 35 }
         ],
-        showPersons: false
+        showPersons: false,
+        authenticated: false
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -49,6 +53,10 @@ class App extends React.Component {
         this.setState({showPersons: !doesShow})
     }
 
+    loginHandler = () => {
+        this.setState({authenticated: true})
+    }
+
     render() {
         let persons = null;
 
@@ -59,26 +67,34 @@ class App extends React.Component {
                          persons={this.state.persons}
                          clicked={this.deletePersonHandler}
                          changed={this.nameChangeHandler}
+                         isAuthenticated={this.state.authenticated}
                      />
                  </div>
              );
         }
 
         return (
-            <div className="App">
-                <Cockpit
-                    showPersons={this.state.showPersons}
-                    toggled={this.togglePersonsHandler}
-                    personsLength={this.state.persons.length}
-                    title={this.props.appTitle}
-                />
-                {persons}
-            </div>
+            <Aux classes="App">
+                <AuthContext.Provider
+                    value={{
+                        authenticated: this.state.authenticated,
+                        login: this.loginHandler
+                    }}
+                >
+                    <Cockpit
+                        showPersons={this.state.showPersons}
+                        toggled={this.togglePersonsHandler}
+                        personsLength={this.state.persons.length}
+                        title={this.props.appTitle}
+                    />
+                    {persons}
+                </AuthContext.Provider>
+            </Aux>
         );
     }
 }
 
-export default App;
+export default withCLass(App, "App");
 
 
 
